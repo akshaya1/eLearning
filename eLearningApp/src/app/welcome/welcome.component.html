@@ -1,0 +1,23 @@
+<div style="text-align:center">
+    <h1>Angular Elearning Application</h1>
+    <p>
+      <br> Click on Login to get Started!!!
+    </p>
+    
+         <p
+            routerLink="/dashboard">
+              <mat-icon class="icon">input</mat-icon>
+              <span class="label">Login</span>
+        </p>
+    
+  </div>
+
+  <h1>Hi {{currentUser.firstName}}!</h1>
+<p>You're logged in with Angular 7!!</p>
+<h3>All registered users:</h3>
+<ul>
+    <li *ngFor="let user of users">
+        {{user.username}} ({{user.firstName}} {{user.lastName}})
+        - <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
+    </li>
+</ul>
