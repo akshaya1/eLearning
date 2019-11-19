@@ -6,13 +6,15 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
-using ELearningWEBAPI;
+using ELearningWEBAPI.Models;
 
 namespace ELearningWEBAPI.Controllers
 {
-    public class UsersController : ApiController
+	public class UsersController : ApiController
     {
         private LearningDatabaseEntities db = new LearningDatabaseEntities();
 
@@ -70,23 +72,41 @@ namespace ELearningWEBAPI.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            db.Users.Add(user);
-            db.SaveChanges();
+		// POST: api/Users
+		[AllowAnonymous]
+		[ResponseType(typeof(User))]
+		public IHttpActionResult PostUser(User user)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-            return CreatedAtRoute("DefaultApi", new { id = user.userid }, user);
-        }
+			db.Users.Add(user);
+			db.SaveChanges();
 
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
+			return CreatedAtRoute("DefaultApi", new { id = user.userid }, user);
+		}
+
+		[HttpGet]
+		[Route("api/GetUserClaims")]
+		public User GetUserClaims()
+		{
+			var identityClaims = (ClaimsIdentity)User.Identity;
+			IEnumerable<Claim> claims = identityClaims.Claims;
+			User model = new User()
+			{
+				username = identityClaims.FindFirst("username").Value,
+				password = identityClaims.FindFirst("password").Value,
+				loggedOn = identityClaims.FindFirst("loggedon").Value,
+				userid = Int32.Parse(identityClaims.FindFirst("Id").Value)
+			};
+			return model;
+		}
+
+		// DELETE: api/Users/5
+		[ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(int id)
         {
             User user = db.Users.Find(id);

@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, UserService, AuthenticationService } from '../services';
+import { AlertService, UserService } from '../services';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -14,15 +15,9 @@ export class RegisterComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private authenticationService: AuthenticationService,
         private userService: UserService,
-        private alertService: AlertService
-    ) { 
-        // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) { 
-            this.router.navigate(['/']);
-        }
-    }
+        private toastrService : ToastrService
+    ) { }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
@@ -49,11 +44,11 @@ export class RegisterComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', true);
+                    this.toastrService.success("Registration successfull!!",'Success')
                     this.router.navigate(['/login']);
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.toastrService.error("Registration Failed",'Error')
                     this.loading = false;
                 });
     }

@@ -1,5 +1,7 @@
-<h2>Login</h2>
+
+<div class="login h-100 d-flex justify-content-center align-items-center"  style="background: linear-gradient(rgb(164, 196, 243),rgb(10, 16, 70));">
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h1 style="color: darkblue; margin-bottom: 20px;">Login</h1>
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
@@ -20,3 +22,4 @@
         <a [routerLink]="['/register']" class="btn btn-link">Register</a>
     </div>
 </form>
+</div>

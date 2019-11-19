@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, AuthenticationService } from '../services';
+import { AlertService, UserService } from '../services';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
@@ -16,14 +17,10 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
-        private alertService: AlertService
-    ) {
-        // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) { 
-            this.router.navigate(['/']);
-        }
-    }
+        private alertService: AlertService,
+        private userService : UserService,
+        private toastrService : ToastrService
+    ) {}
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
@@ -45,16 +42,19 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.invalid) {
             return;
         }
-
-        this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
-            .pipe(first())
+        this.userService.userAuthentication(this.f.username.value, this.f.password.value)
+        .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    if(data.access_token !=null)
+                    {
+                        this.toastrService.success("Login successfull!!",'Success');
+                        localStorage.setItem('AccessToken',data.access_token);
+                        this.router.navigate([this.returnUrl]);
+                    }
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.toastrService.error("Login Failed!!", 'Error')
                     this.loading = false;
                 });
     }

@@ -1,26 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from '../models';
-import { AuthenticationService, UserService } from '../services';
+import { UserService } from '../services';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent implements OnInit, OnDestroy {
+export class WelcomeComponent implements OnInit {
 
   currentUser: User;
-  currentUserSubscription: Subscription;
   users: User[] = [];
 
   constructor(
-      private authenticationService: AuthenticationService,
-      private userService: UserService
+      private userService: UserService,
+      private toastrService : ToastrService
   ) {
-      this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-          this.currentUser = user;
+        this.userService.getUserClaims().subscribe((user: any) => {
+        this.currentUser = user;
       });
   }
 
@@ -28,19 +28,20 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       this.loadAllUsers();
   }
 
-  ngOnDestroy() {
-      // unsubscribe to ensure no memory leaks
-      this.currentUserSubscription.unsubscribe();
-  }
 
   deleteUser(id: number) {
       this.userService.delete(id).pipe(first()).subscribe(() => {
+          debugger;
+          this.toastrService.success("Deleted Successfully!!",'Success');
           this.loadAllUsers()
+      },
+      error => {
+          this.toastrService.error("Deletion Failed",'Error')
       });
   }
 
   private loadAllUsers() {
-      this.userService.getAll().pipe(first()).subscribe(users => {
+      this.userService.getAll().subscribe(users => {
           this.users = users;
       });
   }

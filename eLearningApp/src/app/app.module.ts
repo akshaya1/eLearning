@@ -8,10 +8,15 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AlertComponent } from './alert/alert.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor, ErrorInterceptor, fakeBackendProvider } from './helpers';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule, MatDialogModule, MatButtonModule } from '@angular/material';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AuthInterceptor } from './guards/auth.interceptor';
+import { ToastrModule } from 'ngx-toastr';  
+
 
 
 @NgModule({
@@ -21,22 +26,27 @@ import { RegisterComponent } from './register/register.component';
     DashboardComponent,
     AlertComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatCardModule,
+    MatDialogModule,
+    MatButtonModule,
+    ToastrModule.forRoot()
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
-    fakeBackendProvider
-  ],
+  providers: [ {  provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+ }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
