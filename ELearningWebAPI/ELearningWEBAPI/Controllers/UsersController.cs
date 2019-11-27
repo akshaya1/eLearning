@@ -28,7 +28,7 @@ namespace ELearningWEBAPI.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id)
         {
-            User user = db.Users.Find(id);
+            User user = db.Users.Where(u=>u.userid == id).FirstOrDefault();
             if (user == null)
             {
                 return NotFound();

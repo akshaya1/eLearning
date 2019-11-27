@@ -2,22 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
-import { AlertService, UserService } from '../services';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../services';
+import { UserRoleMappingService } from '../services/userrolemapping.service';
+import { UserRoleMapping } from '../models/userRoleMapping';
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
     submitted = false;
+    userRole : UserRoleMapping = new UserRoleMapping();
 
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
         private userService: UserService,
-        private toastrService : ToastrService
-    ) { }
+        private toastrService : ToastrService,
+        private userRoleMappingService : UserRoleMappingService
+        ) { }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
@@ -43,8 +46,14 @@ export class RegisterComponent implements OnInit {
         this.userService.register(this.registerForm.value)
             .pipe(first())
             .subscribe(
-                data => {
+                (data:any) => {
+                    debugger;
                     this.toastrService.success("Registration successfull!!",'Success')
+                    this.userRole.roleid = 3; // register new users as students
+                    this.userRole.userid = data.userid;
+                    this.userRole.isValid = 1;
+                    this.userRoleMappingService.add(this.userRole).subscribe(data=>{
+                    });
                     this.router.navigate(['/login']);
                 },
                 error => {

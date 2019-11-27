@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
@@ -36,8 +37,24 @@ namespace ELearningWEBAPI.Controllers
             return Ok(cours);
         }
 
-        // PUT: api/Cours/5
-        [ResponseType(typeof(void))]
+		[HttpGet]
+		public HttpResponseMessage GetPdf(string filename)
+		{
+
+			string path = @"C://Samples//" + filename;
+			byte[] pdf = System.IO.File.ReadAllBytes(path);
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new ByteArrayContent(pdf);
+			result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("inline");
+			result.Content.Headers.ContentDisposition.FileName = filename;
+			result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+			return result;
+
+		}
+
+
+		// PUT: api/Cours/5
+		[ResponseType(typeof(void))]
         public IHttpActionResult PutCours(int id, Cours cours)
         {
             if (!ModelState.IsValid)

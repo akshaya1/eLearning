@@ -1,0 +1,14 @@
+.course{
+    background-color: #a2d8e8;
+}
+.list-items {
+    margin :20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .list-item {
+      height: 100px;
+      width: 100px;
+    
+  }

@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AlertService, UserService } from '../services';
 import { ToastrService } from 'ngx-toastr';
+import { RoleService } from '../services/role.service';
 
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
@@ -12,6 +13,7 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
+    role : any
 
     constructor(
         private formBuilder: FormBuilder,
@@ -19,7 +21,8 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private alertService: AlertService,
         private userService : UserService,
-        private toastrService : ToastrService
+        private toastrService : ToastrService,
+        private roleService : RoleService
     ) {}
 
     ngOnInit() {

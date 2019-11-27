@@ -1,26 +1,29 @@
 <section class="home is-info is-fullheight is-bold">
     <div class="container">
-        <h3 style="font-size: 28px;">Welcome {{currentUser.username}}</h3>
+        <h3 style="font-size: 28px;color: rgb(247, 240, 149);">Welcome {{currentUser.username}}</h3>
         <div style="text-align:center">
-            <h1 style="color:crimson;">Angular Elearning Application</h1>
-            <p>
+            <h1 style="color:rgb(250, 192, 32);margin-top: 50px;">Angular Elearning Application</h1>
+            <p style="font-size: large; color:rgb(241, 198, 142)">
               <br> Lets get Started
             </p>
             
                  <p
                     routerLink="/dashboard">
                       <mat-icon class="icon">input</mat-icon>
-                      <span class="label">Continue</span>
+                      <span class="label" style="color: rgb(62, 236, 39);">Continue</span>
                 </p>
             
           </div>
     </div>
-    <div class="container"></div>
-    <h3>All registered users:</h3>
-    <ul>
-        <li *ngFor="let user of users">
-            {{user.username}}
-            - <a (click)="deleteUser(user.userid)" class="text-danger">Delete</a>
-        </li>
-    </ul>
+    <div class="container" *ngIf="role.roleid == 1" style="text-align: center;margin-top: 70px;">
+        <h3 style="color: rgb(222, 245, 94);">All registered users:</h3>
+        <ul>
+            <li *ngFor="let user of users">
+                {{user.username}}
+                - <a (click)="deleteUser(user.userid)" style="color: ivory;">Delete</a>
+                - <a (click)="editRole(user.userid)" style="color: ivory;">Edit Role</a>
+            </li>
+        </ul>
+    </div>
+   
 </section>

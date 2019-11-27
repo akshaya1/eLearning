@@ -14,11 +14,12 @@ export class UserService {
     }
 
     getById(id: number) {
-        return this.http.get(this.rootUrl + '/users/' + id);
+        return this.http.get(this.rootUrl + '/Users/' + id);
     }
 
     register(user: User) {
-        return this.http.post(this.rootUrl + '/Users/register', user);
+        debugger;
+        return this.http.post(this.rootUrl + '/Users', user);
     }
 
     update(user: User) {
@@ -36,7 +37,7 @@ export class UserService {
       }
 
       getUserClaims(){
-        return  this.http.get(this.rootUrl+'/api/GetUserClaims');
+        return  this.http.get(this.rootUrl+'/GetUserClaims');
        }
 
        logout() {

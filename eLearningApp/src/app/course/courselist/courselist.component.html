@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<div class= "course container">
+    <div class = "row">
+        <div class= "col">
+                <h2 style="color: blueviolet;">List of Courses</h2>
+        </div>
+        <div class="col">
+                <div style="text-align: right;" *ngIf="role.roleid == 1 || role.roleid == 2">
+                        <button  class="btn btn-primary" style="margin-top: 20px;" (click)="addCourse()"> <mat-icon class="icon">add_to_queue</mat-icon>Add Course</button>
+                </div>
+         </div>
+    </div>
+       
+<div class="list-items">
+        <div class="list-items" *ngFor="let courses of allCourses">
+                <app-course [courses] = "courses"></app-course>
+        </div>
+        <div *ngIf="allCourses.length == 0" style="text-align: center; margin-bottom: 15px;">
+                <p>No courses found.</p>
+        </div>
+
+</div>
+</div>

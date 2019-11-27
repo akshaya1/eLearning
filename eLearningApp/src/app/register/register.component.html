@@ -1,6 +1,10 @@
-<div class="register  h-100 d-flex justify-content-center align-items-center" style="background: linear-gradient(rgb(164, 196, 243),rgb(10, 16, 70));">
+<div class="register  h-100 d-flex justify-content-center align-items-center"
+ style="background-image: url('..\\..\\assets\\registerbackground.jpg');
+ background-size: cover;
+ background-position: center center;
+ color: cornsilk;">
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <h1 style="color: darkblue; margin-bottom: 20px;">Register</h1>
+        <h1 style="color:cornsilk; margin-bottom: 20px;">Register</h1>
     <div class="form-group">
         <label for="firstName">First Name</label>
         <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
